@@ -20,6 +20,7 @@
         "docs": "https://flarum.org/docs/"
     },
     "require": {
+        "php": ">=7.4",
         "flarum/core": "^0.1.0",
         "flarum/approval": "^0.1.0",
         "flarum/bbcode": "^0.1.0",
