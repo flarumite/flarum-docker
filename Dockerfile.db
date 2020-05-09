@@ -1,0 +1,10 @@
+FROM mysql:5.7
+
+ENV MYSQL_USER "flarum"
+ENV MYSQL_PASSWORD "flarum"
+ENV MYSQL_DATABASE "flarum"
+
+EXPOSE 3306
+
+# Copy and Insert DB Backup
+ADD build/dev/flarum_dev.sql /docker-entrypoint-initdb.d/

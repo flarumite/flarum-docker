@@ -1,0 +1,31 @@
+FROM ianmgg/php74:dev
+
+COPY ./scripts/docker/config/apache/mpm_prefork.conf /etc/apache2/mods-enabled/mpm_prefork.conf
+COPY ./scripts/docker/config/apache/status.conf /etc/apache2/mods-enabled/status.conf
+COPY ./scripts/docker/config/php/startup-apache-dev.sh /usr/local/bin/startup
+COPY ./scripts/docker/config/apache/000-default.conf /etc/apache2/sites-available/000-default.conf
+COPY ./scripts/docker/config/php/docker-php-ext-xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+COPY ./scripts/docker/config/php/sessions.ini /usr/local/etc/php/conf.d/sessions.ini
+COPY ./scripts/docker/config/cronjobs/crontab /etc/cron.d/crontab
+
+RUN chmod 0644 /etc/cron.d/crontab
+
+WORKDIR /var/www
+
+RUN rm -rf /var/www/html
+COPY . /var/www/
+RUN composer install --no-dev \
+  && chmod -R g+w /var/www \
+  && chmod 755 /usr/local/bin/startup
+
+RUN chmod 775 /var/www
+
+ENV MYSQL_DATABASE "flarum"
+ENV MYSQL_USER "flarum"
+ENV MYSQL_PASSWORD "flarum"
+ENV MYSQL_HOST "communitydb"
+ENV MYSQL_PORT "3306"
+
+RUN crontab /etc/cron.d/crontab
+
+CMD ["startup"]

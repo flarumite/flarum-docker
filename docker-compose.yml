@@ -1,0 +1,65 @@
+version: '3'
+services:
+  #######################################
+  # PHP Apache Docker container
+  #######################################
+  apache:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    links:
+      - flarum-db
+    ports:
+      - "127.0.0.1:8001:8080"
+    volumes:
+      - .:/var/www:delegated
+    privileged: true
+    container_name: flarum-svc
+    environment:
+      MYSQL_USER: flarum
+      MYSQL_PASSWORD: flarum
+      MYSQL_DATABASE: flarum
+      MYSQL_HOST: flarumdb
+      MYSQL_PORT: 3306
+      DB_DRIVER: mysql
+      BASE_URL: "http://localhost:8001"
+      REDIS_HOST: "redis"
+      REDIS_PORT: "6379"
+      DEBUG: "true"
+      LOCAL: "true"
+
+  #######################################
+  # MySQL server
+  #######################################
+  flarum-db:
+    build:
+      context: .
+      dockerfile: Dockerfile.db
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_USER: flarum
+      MYSQL_PASSWORD: flarum
+      MYSQL_DATABASE: flarum
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./database:/var/lib/mysql:delegated
+    ports:
+      - "3306:3306"
+    container_name: flarumdb
+
+  #######################################
+  # PHPMyAdmin
+  #######################################
+  flarum-pma:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      PMA_HOSTS: "flarumdb"
+      PMA_VERBOSES: "Flarum Database"
+    ports:
+      - "127.0.0.1:8002:80"
+    links:
+      - flarum-db
+    depends_on:
+      - flarum-db
+    container_name: flarumpma
