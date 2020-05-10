@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.7.29-32)
 # Database: flarum
-# Generation Time: 2020-05-10 00:07:39 +0000
+# Generation Time: 2020-05-10 00:29:39 +0000
 # ************************************************************
 
 
@@ -823,6 +823,8 @@ VALUES
 	('default_locale','en'),
 	('default_route','/all'),
 	('extensions_enabled','[\"flarum-approval\",\"flarum-bbcode\",\"flarum-emoji\",\"flarum-lang-english\",\"flarum-flags\",\"flarum-lock\",\"flarum-markdown\",\"flarum-mentions\",\"flarum-statistics\",\"flarum-sticky\",\"flarum-subscriptions\",\"flarum-suspend\",\"flarum-tags\",\"fof-formatting\",\"fof-user-bio\",\"fof-ignore-users\",\"bokt-cache-assets\",\"fof-impersonate\",\"fof-links\",\"clarkwinkelmann-circle-groups\",\"fof-merge-discussions\",\"franzl-open-links-in-new-tab\",\"fof-moderator-notes\",\"fof-profile-image-crop\",\"fof-best-answer\",\"fof-reactions\",\"fof-sitemap\",\"fof-byobu\",\"fof-default-user-preferences\",\"fof-follow-tags\",\"fof-split\",\"fof-upload\"]'),
+	('flarum-flags.can_flag_own','1'),
+	('flarum-flags.guidelines_url',''),
 	('flarum-tags.max_primary_tags','1'),
 	('flarum-tags.max_secondary_tags','3'),
 	('flarum-tags.min_primary_tags','1'),
@@ -958,7 +960,7 @@ LOCK TABLES `flarum_users` WRITE;
 
 INSERT INTO `flarum_users` (`id`, `username`, `email`, `is_email_confirmed`, `password`, `bio`, `avatar_url`, `preferences`, `joined_at`, `last_seen_at`, `marked_all_as_read_at`, `read_notifications_at`, `discussion_count`, `comment_count`, `read_flags_at`, `suspended_until`, `blocks_byobu_pd`)
 VALUES
-	(1,'flarumite','flarumite@flarumite.com',1,'$2y$10$KIEe2Wc87aWWlTnvtmeVPOAw1M/FFmFgEetle8BoL7tvw4w0kCDm.',NULL,NULL,NULL,'2020-05-09 22:08:27','2020-05-10 00:07:17',NULL,NULL,0,0,NULL,NULL,0);
+	(1,'flarumite','flarumite@flarumite.com',1,'$2y$10$KIEe2Wc87aWWlTnvtmeVPOAw1M/FFmFgEetle8BoL7tvw4w0kCDm.',NULL,NULL,NULL,'2020-05-09 22:08:27','2020-05-10 00:28:35',NULL,NULL,0,0,NULL,NULL,0);
 
 /*!40000 ALTER TABLE `flarum_users` ENABLE KEYS */;
 UNLOCK TABLES;
