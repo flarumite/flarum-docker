@@ -15,6 +15,8 @@ The Flarum installation will be available at `http://localhost:8001`
 
 Default credentials:
 - flarumite/flarumite (admin user)
+- moderator/flarumite (moderator user)
+- user/flarumite (standard user)
 
 ##### Resetting the DB
 If you find yourself in a position that you need to reset the DB to a known good state, or to apply any changes that have been added to the repo:
