@@ -14,32 +14,31 @@ if ($mysqlReadHost === false) {
 }
 
 return [
-    'debug' => $debug,
-    'offline' => false,
+    'debug'    => $debug,
+    'offline'  => false,
     'database' => [
         'write' => [
-            'host' => $mysqlWriteHost
+            'host' => $mysqlWriteHost,
         ],
         'read' => [
-            'host' => $mysqlReadHost
+            'host' => $mysqlReadHost,
         ],
-        'sticky' => true,
-        'driver' => getenv('DB_DRIVER'),
-        'database' => getenv('MYSQL_DATABASE'),
-        'port' => getenv('MYSQL_PORT'),
-        'username' => getenv('MYSQL_USER'),
-        'password' => getenv('MYSQL_PASSWORD'),
-        'charset' => 'utf8mb4',
-        'collation' => 'utf8mb4_unicode_ci',
-        'prefix' => 'flarum_',
-        'strict' => false,
-        'engine' => 'InnoDB',
+        'sticky'         => true,
+        'driver'         => getenv('DB_DRIVER'),
+        'database'       => getenv('MYSQL_DATABASE'),
+        'port'           => getenv('MYSQL_PORT'),
+        'username'       => getenv('MYSQL_USER'),
+        'password'       => getenv('MYSQL_PASSWORD'),
+        'charset'        => 'utf8mb4',
+        'collation'      => 'utf8mb4_unicode_ci',
+        'prefix'         => 'flarum_',
+        'strict'         => false,
+        'engine'         => 'InnoDB',
         'prefix_indexes' => true,
     ],
-    'url' => getenv('BASE_URL'),
-    'paths' =>
-    array(
-        'api' => 'api',
+    'url'   => getenv('BASE_URL'),
+    'paths' => [
+        'api'   => 'api',
         'admin' => 'admin',
-    ),
+    ],
 ];
