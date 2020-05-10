@@ -41,7 +41,7 @@
         "flarumite/flarum-decontaminator": "^0.1.0",
         "fof/best-answer": "^0.1.7",
         "fof/byobu": "^0.5.0",
-        "fof/console": "^0.5.2",
+        "fof/console": "^0.5.3",
         "fof/default-user-preferences": "^0.2.0",
         "fof/follow-tags": "^0.3.4",
         "fof/formatting": "^0.1.4",
