@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.7.29-32)
 # Database: flarum
-# Generation Time: 2020-05-09 22:24:46 +0000
+# Generation Time: 2020-05-10 00:07:39 +0000
 # ************************************************************
 
 
@@ -119,6 +119,10 @@ CREATE TABLE `flarum_discussions` (
   `is_approved` tinyint(1) NOT NULL DEFAULT '1',
   `is_locked` tinyint(1) NOT NULL DEFAULT '0',
   `is_sticky` tinyint(1) NOT NULL DEFAULT '0',
+  `best_answer_post_id` int(10) unsigned DEFAULT NULL,
+  `best_answer_user_id` int(10) unsigned DEFAULT NULL,
+  `best_answer_notified` tinyint(1) NOT NULL,
+  `best_answer_set_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `flarum_discussions_hidden_user_id_foreign` (`hidden_user_id`),
   KEY `flarum_discussions_first_post_id_foreign` (`first_post_id`),
@@ -132,7 +136,12 @@ CREATE TABLE `flarum_discussions` (
   KEY `flarum_discussions_hidden_at_index` (`hidden_at`),
   KEY `flarum_discussions_is_locked_index` (`is_locked`),
   KEY `flarum_discussions_is_sticky_created_at_index` (`is_sticky`,`created_at`),
+  KEY `flarum_discussions_best_answer_post_id_foreign` (`best_answer_post_id`),
+  KEY `flarum_discussions_best_answer_user_id_foreign` (`best_answer_user_id`),
+  KEY `flarum_discussions_best_answer_set_at_index` (`best_answer_set_at`),
   FULLTEXT KEY `title` (`title`),
+  CONSTRAINT `flarum_discussions_best_answer_post_id_foreign` FOREIGN KEY (`best_answer_post_id`) REFERENCES `flarum_posts` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `flarum_discussions_best_answer_user_id_foreign` FOREIGN KEY (`best_answer_user_id`) REFERENCES `flarum_users` (`id`) ON DELETE SET NULL,
   CONSTRAINT `flarum_discussions_first_post_id_foreign` FOREIGN KEY (`first_post_id`) REFERENCES `flarum_posts` (`id`) ON DELETE SET NULL,
   CONSTRAINT `flarum_discussions_hidden_user_id_foreign` FOREIGN KEY (`hidden_user_id`) REFERENCES `flarum_users` (`id`) ON DELETE SET NULL,
   CONSTRAINT `flarum_discussions_last_post_id_foreign` FOREIGN KEY (`last_post_id`) REFERENCES `flarum_posts` (`id`) ON DELETE SET NULL,
@@ -182,6 +191,56 @@ CREATE TABLE `flarum_flags` (
 
 
 
+# Dump of table flarum_fof_upload_downloads
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `flarum_fof_upload_downloads`;
+
+CREATE TABLE `flarum_fof_upload_downloads` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `file_id` int(10) unsigned NOT NULL,
+  `discussion_id` int(10) unsigned DEFAULT NULL,
+  `post_id` int(10) unsigned DEFAULT NULL,
+  `actor_id` int(10) unsigned DEFAULT NULL,
+  `downloaded_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `flarum_fof_upload_downloads_file_id_foreign` (`file_id`),
+  KEY `flarum_fof_upload_downloads_discussion_id_foreign` (`discussion_id`),
+  KEY `flarum_fof_upload_downloads_actor_id_foreign` (`actor_id`),
+  KEY `flarum_fof_upload_downloads_post_id_foreign` (`post_id`),
+  CONSTRAINT `flarum_fof_upload_downloads_actor_id_foreign` FOREIGN KEY (`actor_id`) REFERENCES `flarum_users` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `flarum_fof_upload_downloads_discussion_id_foreign` FOREIGN KEY (`discussion_id`) REFERENCES `flarum_discussions` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `flarum_fof_upload_downloads_file_id_foreign` FOREIGN KEY (`file_id`) REFERENCES `flarum_fof_upload_files` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `flarum_fof_upload_downloads_post_id_foreign` FOREIGN KEY (`post_id`) REFERENCES `flarum_posts` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+
+# Dump of table flarum_fof_upload_files
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `flarum_fof_upload_files`;
+
+CREATE TABLE `flarum_fof_upload_files` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `actor_id` int(10) unsigned DEFAULT NULL,
+  `discussion_id` int(10) unsigned DEFAULT NULL,
+  `post_id` int(10) unsigned DEFAULT NULL,
+  `base_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `path` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `url` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `size` int(11) NOT NULL,
+  `upload_method` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `remote_id` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `uuid` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `tag` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+
 # Dump of table flarum_group_permission
 # ------------------------------------------------------------
 
@@ -202,8 +261,10 @@ VALUES
 	(2,'viewDiscussions'),
 	(3,'discussion.flagPosts'),
 	(3,'discussion.likePosts'),
+	(3,'discussion.reactPosts'),
 	(3,'discussion.reply'),
 	(3,'discussion.replyWithoutApproval'),
+	(3,'discussion.selectBestAnswerOwnDiscussion'),
 	(3,'discussion.startWithoutApproval'),
 	(3,'startDiscussion'),
 	(3,'viewUserList'),
@@ -217,8 +278,10 @@ VALUES
 	(4,'discussion.tag'),
 	(4,'discussion.viewFlags'),
 	(4,'discussion.viewIpsPosts'),
+	(4,'user.createModeratorNotes'),
 	(4,'user.suspend'),
-	(4,'user.viewLastSeenAt');
+	(4,'user.viewLastSeenAt'),
+	(4,'user.viewModeratorNotes');
 
 /*!40000 ALTER TABLE `flarum_group_permission` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -276,6 +339,43 @@ VALUES
 
 /*!40000 ALTER TABLE `flarum_groups` ENABLE KEYS */;
 UNLOCK TABLES;
+
+
+# Dump of table flarum_ignored_user
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `flarum_ignored_user`;
+
+CREATE TABLE `flarum_ignored_user` (
+  `user_id` int(10) unsigned NOT NULL,
+  `ignored_user_id` int(10) unsigned NOT NULL,
+  `ignored_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`user_id`,`ignored_user_id`),
+  KEY `flarum_ignored_user_ignored_user_id_foreign` (`ignored_user_id`),
+  CONSTRAINT `flarum_ignored_user_ignored_user_id_foreign` FOREIGN KEY (`ignored_user_id`) REFERENCES `flarum_users` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `flarum_ignored_user_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `flarum_users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+
+# Dump of table flarum_links
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `flarum_links`;
+
+CREATE TABLE `flarum_links` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `url` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `position` int(11) DEFAULT NULL,
+  `is_internal` tinyint(1) NOT NULL DEFAULT '0',
+  `is_newtab` tinyint(1) NOT NULL DEFAULT '0',
+  `parent_id` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `flarum_links_parent_id_foreign` (`parent_id`),
+  CONSTRAINT `flarum_links_parent_id_foreign` FOREIGN KEY (`parent_id`) REFERENCES `flarum_links` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 
 
 # Dump of table flarum_login_providers
@@ -426,7 +526,41 @@ VALUES
 	('2018_06_27_100200_change_tag_user_add_foreign_keys','flarum-tags'),
 	('2018_06_27_103000_rename_discussions_tags_to_discussion_tag','flarum-tags'),
 	('2018_06_27_103100_add_discussion_tag_foreign_keys','flarum-tags'),
-	('2019_04_21_000000_add_icon_to_tags_table','flarum-tags');
+	('2019_04_21_000000_add_icon_to_tags_table','flarum-tags'),
+	('2019_06_29_000000_create_ignored_users_table','fof-ignore-users'),
+	('2020_05_05_000000_migrate_extension_settings','fof-impersonate'),
+	('2016_02_13_000000_create_links_table','fof-links'),
+	('2016_04_19_065618_change_links_columns','fof-links'),
+	('2020_03_16_000000_add_child_links','fof-links'),
+	('2020_02_25_000001_create_moderator_notes_table','fof-moderator-notes'),
+	('2020_02_25_000002_add_default_permissions','fof-moderator-notes'),
+	('2020_02_29_000001_modify_users_notes_foreign_keys','fof-moderator-notes'),
+	('2019_11_04_000001_add_columns_to_discussions_table','fof-best-answer'),
+	('2019_11_04_000002_add_foreign_keys_to_best_anwer_columns','fof-best-answer'),
+	('2019_11_04_000003_migrate_extension_settings','fof-best-answer'),
+	('2020_02_04_205300_add_best_answer_set_timestamp','fof-best-answer'),
+	('2019_07_08_000000_create_reactions_tables','fof-reactions'),
+	('2019_07_08_000001_create_post_reactions_table','fof-reactions'),
+	('2019_07_08_000002_add_default_reaction_permission','fof-reactions'),
+	('2019_07_08_000003_migrate_extension_settings','fof-reactions'),
+	('2019_12_05_000000_add_timestamps_to_post_reactions_table','fof-reactions'),
+	('2019_12_13_120237_add_enabled_column_to_reactions_table','fof-reactions'),
+	('2020_01_19_000000_add_display_column_to_reactions_table','fof-reactions'),
+	('2019_06_07_000000_add_recipients_table','fof-byobu'),
+	('2019_06_07_000001_remove_flagrow_migrations','fof-byobu'),
+	('2019_07_08_000000_add_blocks_pd_to_users','fof-byobu'),
+	('2019_07_09_000000_blocks_pd_index','fof-byobu'),
+	('2020_02_14_214800_fix_user_id_not_nullable_for_group_pds','fof-byobu'),
+	('2020_02_19_110103_remove_retired_settings_key','fof-byobu'),
+	('2019_06_11_000000_add_subscription_to_users_tags_table','fof-follow-tags'),
+	('2019_06_28_000000_add_hide_subscription_option','fof-follow-tags'),
+	('2020_02_06_01_rename_flagrow_permissions','fof-upload'),
+	('2020_02_06_02_rename_flagrow_settings','fof-upload'),
+	('2020_02_06_03_rename_flagrow_tables','fof-upload'),
+	('2020_02_06_04_remove_flagrow_migrations','fof-upload'),
+	('2020_02_06_05_create_files_table','fof-upload'),
+	('2020_02_06_06_create_downloads_table','fof-upload'),
+	('2020_02_06_07_alter_downloads_add_post_constraint','fof-upload');
 
 /*!40000 ALTER TABLE `flarum_migrations` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -520,6 +654,29 @@ CREATE TABLE `flarum_post_mentions_user` (
 
 
 
+# Dump of table flarum_post_reactions
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `flarum_post_reactions`;
+
+CREATE TABLE `flarum_post_reactions` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `post_id` int(10) unsigned NOT NULL,
+  `user_id` int(10) unsigned NOT NULL,
+  `reaction_id` int(10) unsigned DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `flarum_post_reactions_post_id_foreign` (`post_id`),
+  KEY `flarum_post_reactions_user_id_foreign` (`user_id`),
+  KEY `flarum_post_reactions_reaction_id_foreign` (`reaction_id`),
+  CONSTRAINT `flarum_post_reactions_post_id_foreign` FOREIGN KEY (`post_id`) REFERENCES `flarum_posts` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `flarum_post_reactions_reaction_id_foreign` FOREIGN KEY (`reaction_id`) REFERENCES `flarum_reactions` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `flarum_post_reactions_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `flarum_users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+
 # Dump of table flarum_post_user
 # ------------------------------------------------------------
 
@@ -572,6 +729,60 @@ CREATE TABLE `flarum_posts` (
 
 
 
+# Dump of table flarum_reactions
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `flarum_reactions`;
+
+CREATE TABLE `flarum_reactions` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `identifier` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `display` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+LOCK TABLES `flarum_reactions` WRITE;
+/*!40000 ALTER TABLE `flarum_reactions` DISABLE KEYS */;
+
+INSERT INTO `flarum_reactions` (`id`, `identifier`, `type`, `enabled`, `display`)
+VALUES
+	(1,'thumbsup','emoji',1,NULL),
+	(2,'thumbsdown','emoji',1,NULL),
+	(3,'laughing','emoji',1,NULL),
+	(4,'confused','emoji',1,NULL),
+	(5,'heart','emoji',1,NULL),
+	(6,'tada','emoji',1,NULL);
+
+/*!40000 ALTER TABLE `flarum_reactions` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# Dump of table flarum_recipients
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `flarum_recipients`;
+
+CREATE TABLE `flarum_recipients` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `discussion_id` int(10) unsigned DEFAULT NULL,
+  `user_id` int(10) unsigned DEFAULT NULL,
+  `group_id` int(10) unsigned DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `removed_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `flarum_recipients_discussion_id_foreign` (`discussion_id`),
+  KEY `flarum_recipients_user_id_foreign` (`user_id`),
+  KEY `flarum_recipients_group_id_foreign` (`group_id`),
+  CONSTRAINT `flarum_recipients_discussion_id_foreign` FOREIGN KEY (`discussion_id`) REFERENCES `flarum_discussions` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `flarum_recipients_group_id_foreign` FOREIGN KEY (`group_id`) REFERENCES `flarum_groups` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `flarum_recipients_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `flarum_users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+
 # Dump of table flarum_registration_tokens
 # ------------------------------------------------------------
 
@@ -611,11 +822,25 @@ VALUES
 	('custom_less',''),
 	('default_locale','en'),
 	('default_route','/all'),
-	('extensions_enabled','[\"flarum-approval\",\"flarum-bbcode\",\"flarum-emoji\",\"flarum-lang-english\",\"flarum-flags\",\"flarum-likes\",\"flarum-lock\",\"flarum-markdown\",\"flarum-mentions\",\"flarum-statistics\",\"flarum-sticky\",\"flarum-subscriptions\",\"flarum-suspend\",\"flarum-tags\"]'),
+	('extensions_enabled','[\"flarum-approval\",\"flarum-bbcode\",\"flarum-emoji\",\"flarum-lang-english\",\"flarum-flags\",\"flarum-lock\",\"flarum-markdown\",\"flarum-mentions\",\"flarum-statistics\",\"flarum-sticky\",\"flarum-subscriptions\",\"flarum-suspend\",\"flarum-tags\",\"fof-formatting\",\"fof-user-bio\",\"fof-ignore-users\",\"bokt-cache-assets\",\"fof-impersonate\",\"fof-links\",\"clarkwinkelmann-circle-groups\",\"fof-merge-discussions\",\"franzl-open-links-in-new-tab\",\"fof-moderator-notes\",\"fof-profile-image-crop\",\"fof-best-answer\",\"fof-reactions\",\"fof-sitemap\",\"fof-byobu\",\"fof-default-user-preferences\",\"fof-follow-tags\",\"fof-split\",\"fof-upload\"]'),
 	('flarum-tags.max_primary_tags','1'),
 	('flarum-tags.max_secondary_tags','3'),
 	('flarum-tags.min_primary_tags','1'),
 	('flarum-tags.min_secondary_tags','0'),
+	('fof-best-answer.allow_select_own_post','1'),
+	('fof-best-answer.remind_tag_ids',''),
+	('fof-best-answer.schedule_on_one_server','0'),
+	('fof-best-answer.select_best_answer_reminder_days',''),
+	('fof-best-answer.stop_overnight','0'),
+	('fof-best-answer.store_log_output','0'),
+	('fof-best-answer.use_alternative_ui','1'),
+	('fof-byobu.use_tag_slug','general'),
+	('fof-formatting.plugin.autoimage','1'),
+	('fof-formatting.plugin.autovideo','1'),
+	('fof-formatting.plugin.fancypants',''),
+	('fof-formatting.plugin.htmlentities',''),
+	('fof-formatting.plugin.mediaembed','1'),
+	('fof-formatting.plugin.pipetables','1'),
 	('forum_description',''),
 	('forum_title','Flarumite Dev'),
 	('mail_driver','log'),
@@ -642,6 +867,7 @@ CREATE TABLE `flarum_tag_user` (
   `tag_id` int(10) unsigned NOT NULL,
   `marked_as_read_at` datetime DEFAULT NULL,
   `is_hidden` tinyint(1) NOT NULL DEFAULT '0',
+  `subscription` enum('follow','lurk','ignore','hide') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`user_id`,`tag_id`),
   KEY `flarum_tag_user_tag_id_foreign` (`tag_id`),
   CONSTRAINT `flarum_tag_user_tag_id_foreign` FOREIGN KEY (`tag_id`) REFERENCES `flarum_tags` (`id`) ON DELETE CASCADE,
@@ -688,7 +914,7 @@ LOCK TABLES `flarum_tags` WRITE;
 
 INSERT INTO `flarum_tags` (`id`, `name`, `slug`, `description`, `color`, `background_path`, `background_mode`, `position`, `parent_id`, `default_sort`, `is_restricted`, `is_hidden`, `discussion_count`, `last_posted_at`, `last_posted_discussion_id`, `last_posted_user_id`, `icon`)
 VALUES
-	(1,'General','general',NULL,'#888',NULL,NULL,0,NULL,NULL,0,0,0,NULL,NULL,NULL,NULL);
+	(1,'General','general','','#888',NULL,NULL,0,NULL,NULL,0,0,0,NULL,NULL,NULL,'fas fa-comments');
 
 /*!40000 ALTER TABLE `flarum_tags` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -716,24 +942,47 @@ CREATE TABLE `flarum_users` (
   `comment_count` int(10) unsigned NOT NULL DEFAULT '0',
   `read_flags_at` datetime DEFAULT NULL,
   `suspended_until` datetime DEFAULT NULL,
+  `blocks_byobu_pd` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `flarum_users_username_unique` (`username`),
   UNIQUE KEY `flarum_users_email_unique` (`email`),
   KEY `flarum_users_joined_at_index` (`joined_at`),
   KEY `flarum_users_last_seen_at_index` (`last_seen_at`),
   KEY `flarum_users_discussion_count_index` (`discussion_count`),
-  KEY `flarum_users_comment_count_index` (`comment_count`)
+  KEY `flarum_users_comment_count_index` (`comment_count`),
+  KEY `flarum_users_blocks_byobu_pd_index` (`blocks_byobu_pd`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 LOCK TABLES `flarum_users` WRITE;
 /*!40000 ALTER TABLE `flarum_users` DISABLE KEYS */;
 
-INSERT INTO `flarum_users` (`id`, `username`, `email`, `is_email_confirmed`, `password`, `bio`, `avatar_url`, `preferences`, `joined_at`, `last_seen_at`, `marked_all_as_read_at`, `read_notifications_at`, `discussion_count`, `comment_count`, `read_flags_at`, `suspended_until`)
+INSERT INTO `flarum_users` (`id`, `username`, `email`, `is_email_confirmed`, `password`, `bio`, `avatar_url`, `preferences`, `joined_at`, `last_seen_at`, `marked_all_as_read_at`, `read_notifications_at`, `discussion_count`, `comment_count`, `read_flags_at`, `suspended_until`, `blocks_byobu_pd`)
 VALUES
-	(1,'flarumite','flarumite@flarumite.com',1,'$2y$10$KIEe2Wc87aWWlTnvtmeVPOAw1M/FFmFgEetle8BoL7tvw4w0kCDm.',NULL,NULL,NULL,'2020-05-09 22:08:27','2020-05-09 22:22:52',NULL,NULL,0,0,NULL,NULL);
+	(1,'flarumite','flarumite@flarumite.com',1,'$2y$10$KIEe2Wc87aWWlTnvtmeVPOAw1M/FFmFgEetle8BoL7tvw4w0kCDm.',NULL,NULL,NULL,'2020-05-09 22:08:27','2020-05-10 00:07:17',NULL,NULL,0,0,NULL,NULL,0);
 
 /*!40000 ALTER TABLE `flarum_users` ENABLE KEYS */;
 UNLOCK TABLES;
+
+
+# Dump of table flarum_users_notes
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `flarum_users_notes`;
+
+CREATE TABLE `flarum_users_notes` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) unsigned NOT NULL,
+  `note` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `added_by_user_id` int(10) unsigned DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  KEY `flarum_users_notes_added_by_user_id_foreign` (`added_by_user_id`),
+  CONSTRAINT `flarum_users_notes_added_by_user_id_foreign` FOREIGN KEY (`added_by_user_id`) REFERENCES `flarum_users` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `flarum_users_notes_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `flarum_users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 
 
 
