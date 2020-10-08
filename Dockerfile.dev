@@ -16,11 +16,10 @@ WORKDIR /var/www
 RUN rm -rf /var/www/html
 COPY . /var/www/
 RUN composer install --no-dev \
+  && chown -R www-data:www-data /var/www \
   && chmod -R g+w /var/www \
+  && chmod -R 755 /var/www \
   && chmod 755 /usr/local/bin/startup
-
-RUN chown -R www-data:www-data /var/www/
-RUN chmod -R 755 /var/www
 
 ENV MYSQL_DATABASE "flarum"
 ENV MYSQL_USER "flarum"
