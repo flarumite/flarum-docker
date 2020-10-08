@@ -10,6 +10,9 @@ COPY ./scripts/docker/config/cronjobs/crontab /etc/cron.d/crontab
 
 RUN chmod 0644 /etc/cron.d/crontab
 
+RUN chown -R www-data:www-data /var/www/
+RUN chmod -R 755 /var/www
+
 WORKDIR /var/www
 
 RUN rm -rf /var/www/html
@@ -17,8 +20,6 @@ COPY . /var/www/
 RUN composer install --no-dev \
   && chmod -R g+w /var/www \
   && chmod 755 /usr/local/bin/startup
-
-RUN chmod 775 /var/www
 
 ENV MYSQL_DATABASE "flarum"
 ENV MYSQL_USER "flarum"
