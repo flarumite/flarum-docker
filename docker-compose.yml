@@ -43,7 +43,7 @@ services:
       MYSQL_DATABASE: flarum
       MYSQL_ROOT_PASSWORD: root
     volumes:
-      - ./database:/var/lib/mysql:delegated
+      - database:/var/lib/mysql:delegated
     ports:
       - "3306:3306"
     container_name: flarumdb
@@ -63,3 +63,5 @@ services:
     depends_on:
       - flarum-db
     container_name: flarumpma
+volumes:
+  database:

@@ -1,5 +1,4 @@
 FROM ianmgg/php74:dev
-# FROM islamicnetwork/php74:latest
 
 COPY ./scripts/docker/config/apache/mpm_prefork.conf /etc/apache2/mods-enabled/mpm_prefork.conf
 COPY ./scripts/docker/config/apache/status.conf /etc/apache2/mods-enabled/status.conf
@@ -15,10 +14,9 @@ WORKDIR /var/www
 
 RUN rm -rf /var/www/html
 COPY . /var/www/
-RUN composer install --no-dev \
+RUN composer install \
   && chown -R www-data:www-data /var/www \
   && chmod -R g+w /var/www \
-  && chmod -R 755 /var/www \
   && chmod 755 /usr/local/bin/startup
 
 ENV MYSQL_DATABASE "flarum"
