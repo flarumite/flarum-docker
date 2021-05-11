@@ -24,11 +24,11 @@
         "docs": "https://flarum.org/docs/"
     },
     "require": {
-        "php": ">=7.4",
+        "php": "^8.0",
         "bokt/flarum-cache-assets": "*",
         "flarum/approval": "*",
         "flarum/bbcode": "*",
-        "flarum/core": "0.1.0-beta.15",
+        "flarum/core": "0.1.0-beta.16",
         "flarum/emoji": "*",
         "flarum/flags": "*",
         "flarum/lang-english": "*",
@@ -57,7 +57,6 @@
         "fof/reactions": "*",
         "fof/sitemap": "*",
         "fof/split": "*",
-        "fof/upload": "*",
         "fof/user-bio": "*",
         "ianm/follow-users": "*"
     },
