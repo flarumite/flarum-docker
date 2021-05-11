@@ -165,6 +165,8 @@ docker-compose up
 
 After this, your forum will be available for use.
 
+If you'd like to start the containers without having them attached to your terminal, you can run `docker-compose up -d`.
+
 ### Flarum
 
 The Flarum installation will be available at `http://localhost`
