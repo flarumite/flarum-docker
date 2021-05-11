@@ -101,6 +101,8 @@ You will need to set up and configure your system to work with Docker.
 
 Follow the installation instructions on the Docker website for your Linux distro: https://docs.docker.com/engine/install/ubuntu/
 
+Please also remember to follow the post-install instructions, otherwise you will have strange errors: https://docs.docker.com/engine/install/linux-postinstall/
+
 #### Windows
 
 <details>
@@ -163,9 +165,9 @@ docker-compose build
 docker-compose up
 ```
 
-After this, your forum will be available for use.
-
 If you'd like to start the containers without having them attached to your terminal, you can run `docker-compose up -d`.
+
+> **Note:** if you see some errors similar to 'permission denied' and 'Connection aborted' on Linux, make sure Docker is started with `sudo systemctl start docker`.
 
 ### Flarum
 
