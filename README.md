@@ -48,7 +48,7 @@ One of the most common methods on Ubuntu is via `apt` and a PHP PPA. You're rely
 ```properties
 sudo add-apt-repository ppa:ondrej/php
 sudo apt update
-sudo apt install php8.0 php8.0-curl 
+sudo apt install php8.0 php8.0-curl php8.0-mbstring php8.0-dom
 ```
 
 #### Windows
