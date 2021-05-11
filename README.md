@@ -25,7 +25,6 @@ This is not designed to be used for production systems.
   - [Resetting the database](#resetting-the-database)
   - [PHPMyAdmin](#phpmyadmin)
 - [Development](#development)
-- [Troubleshooting](#troubleshooting)
 
 ## Setup
 
@@ -224,5 +223,3 @@ You can also do this with Flarum's core by cloning the repo and running `compose
 If you want to go back to the latest published version of an extension/package, remove it from your `workbench` folder, then run `composer update -W <vendor/package>`.
 
 This ties in nicely with the CLI access provided by `docker exec`, explained above.
-
-## Troubleshooting
