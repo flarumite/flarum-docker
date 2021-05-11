@@ -1,17 +1,21 @@
 {
     "name": "flarumite/flarum-docker",
     "description": "Simple Docker image to aid Flarum extension development.",
-    "type": "project",
+    "type": "metapackage",
     "keywords": [
         "flarum",
         "docker"
     ],
-    "homepage": "https://flarumite.com/",
+    "homepage": "https://github.com/flarumite/flarum-docker",
     "license": "MIT",
     "authors": [
         {
             "name": "Ian Morland",
             "email": "ian@flarumite.com"
+        },
+        {
+            "name": "David Wheatley",
+            "email": "hi@davwheat.dev"
         }
     ],
     "support": {
