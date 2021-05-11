@@ -48,7 +48,7 @@ One of the most common methods on Ubuntu is via `apt` and a PHP PPA. You're rely
 ```properties
 sudo add-apt-repository ppa:ondrej/php
 sudo apt update
-sudo apt install php8.0
+sudo apt install php8.0 php8.0-curl 
 ```
 
 #### Windows
@@ -156,7 +156,7 @@ From the root of the repository, run:
 
 ```properties
 # Installs Flarum and other needed dependencies
-composer install
+composer update
 # Builds the docker container
 docker-compose build
 # Runs the containers
