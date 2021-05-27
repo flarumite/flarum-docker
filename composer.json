@@ -54,6 +54,7 @@
         "fof/reactions": "*",
         "fof/sitemap": "*",
         "fof/split": "*",
+        "fof/upload": "^1.0",
         "fof/user-bio": "*",
         "ianm/follow-users": "*"
     },
