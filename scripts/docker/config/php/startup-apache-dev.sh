@@ -3,14 +3,16 @@
 # Workaround for permissions issues running the docker images on Ubuntu
 usermod -u 1000 www-data
 
+cd /var/www
+
 # Clear cache
-cd /var/www && php flarum cache:clear
+php flarum cache:clear
 
-# We will also need to add the running of migrations here
-cd /var/www && php flarum migrate
+# Run migrations
+php flarum migrate
 
-# Pre-compile assets
-# cd /var/www && php flarum cache:assets --css --js --locales
+# Publish all assets (FontAwesome, JS, CSS, etc)
+php flarum assets:publish
 
 # Make the environment variables available for cron
 printenv | grep -v "no_proxy" >> /etc/environment
