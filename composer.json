@@ -27,7 +27,7 @@
         "php": "^8.0",
         "flarum/approval": "*",
         "flarum/bbcode": "*",
-        "flarum/core": "dev-master",
+        "flarum/core": "^1.0",
         "flarum/emoji": "*",
         "flarum/flags": "*",
         "flarum/lang-english": "*",
