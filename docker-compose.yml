@@ -10,9 +10,9 @@ services:
     links:
       - flarum-db
     ports:
-      - "127.0.0.1:80:8080"
+      # - "127.0.0.1:80:8080"
       # Switch to this line if you want to access Flarum from other devices on your network
-      # - "80:8080"
+      - "80:8080"
     volumes:
       - .:/var/www:delegated
     privileged: true
