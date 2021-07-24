@@ -12,7 +12,7 @@ This is not designed to be used for production systems.
     - [Linux](#linux)
     - [Windows](#windows)
   - [Setting up Composer](#setting-up-composer)
-  - [Linux](#linux-1)
+    - [Linux](#linux-1)
     - [Windows](#windows-1)
   - [Setting up Docker](#setting-up-docker)
     - [Linux](#linux-2)
@@ -29,6 +29,15 @@ This is not designed to be used for production systems.
 ## Setup
 
 You might need to configure a few things before using this container to get it working how you need it.
+
+> ⚠️ If you're using Windows 10/11, you might want to consider using the Windows Subsystem for Linux (WSL) instead of running this on Windows natively.
+>
+> To set up WSL2, follow these steps in order:
+> - [Docker for Windows setup in this README](https://github.com/davwheat/flarum-docker#windows-2)
+> - https://docs.microsoft.com/en-us/windows/wsl/install-win10
+> - https://docs.microsoft.com/en-us/windows/wsl/tutorials/wsl-git#git-credential-manager-setup
+> - In Docker Desktop, click Settings, Resources, WSL Integration, and toggle all switches on. Click Apply & Restart.
+> - Perform Linux [PHP](#linux) and [Composer](#linux-1) setup instructions within WSL2.
 
 ### Prerequisites
 
@@ -73,7 +82,7 @@ You need to extract this to a folder on your PC, then add this folder to your PA
 
 Composer is used to install Flarum itself, so it's pretty important. You'll also use it to install extensions, too.
 
-### Linux
+#### Linux
 
 Follow the command-line installation instructions here: https://getcomposer.org/download/
 
