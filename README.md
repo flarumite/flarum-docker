@@ -1,4 +1,4 @@
-# flarumite/flarum-docker <!-- omit in toc -->
+# Flarum Docker Container <!-- omit in toc -->
 
 A dockerised install of Flarum designed to aid in development and testing.
 
