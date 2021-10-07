@@ -1,9 +1,10 @@
-version: '3'
+version: '3.8'
 services:
   #######################################
   # PHP Apache Docker container
   #######################################
   apache:
+    platform: linux/amd64
     build:
       context: .
       dockerfile: Dockerfile.dev
@@ -36,6 +37,7 @@ services:
   # MySQL server
   #######################################
   flarum-db:
+    platform: linux/amd64
     build:
       context: .
       dockerfile: Dockerfile.db
@@ -56,6 +58,7 @@ services:
   # PHPMyAdmin
   #######################################
   flarum-pma:
+    platform: linux/amd64
     image: phpmyadmin/phpmyadmin
     environment:
       PMA_HOSTS: "flarumdb"
