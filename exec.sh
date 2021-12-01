@@ -1,2 +1,2 @@
 #!/bin/bash
-docker exec -it flarum-svc bash
+docker exec -it flarumite-svc bash

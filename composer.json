@@ -11,7 +11,7 @@
     "authors": [
         {
             "name": "Ian Morland",
-            "email": "ian@flarumite.com"
+            "email": "ian@blomstra.net"
         },
         {
             "name": "David Wheatley",
@@ -25,10 +25,14 @@
     },
     "require": {
         "php": "^8.0",
-        "davwheat/custom-sidenav-links": "^1.0",
+        "blomstra/cache-assets": "*",
+        "blomstra/database-queue": "*",
+        "blomstra/flarum-redis": "*",
+        "blomstra/search": "*",
+        "davwheat/custom-sidenav-links": "*",
         "flarum/approval": "*",
         "flarum/bbcode": "*",
-        "flarum/core": "^1.0",
+        "flarum/core": "^1.1",
         "flarum/emoji": "*",
         "flarum/flags": "*",
         "flarum/lang-english": "*",
@@ -36,34 +40,49 @@
         "flarum/lock": "*",
         "flarum/markdown": "*",
         "flarum/mentions": "*",
+        "flarum/nicknames": "*",
         "flarum/statistics": "*",
         "flarum/sticky": "*",
         "flarum/subscriptions": "*",
         "flarum/suspend": "*",
         "flarum/tags": "*",
         "fof/best-answer": "*",
-        "fof/byobu": "@beta",
+        "fof/byobu": "*",
         "fof/default-user-preferences": "*",
         "fof/follow-tags": "*",
         "fof/formatting": "*",
+        "fof/gamification": "*",
+        "fof/geoip": "*",
         "fof/ignore-users": "*",
         "fof/impersonate": "*",
+        "fof/linguist": "*",
         "fof/links": "*",
         "fof/moderator-notes": "*",
         "fof/nightmode": "*",
+        "fof/oauth": "*",
+        "fof/pages": "*",
         "fof/profile-image-crop": "*",
         "fof/reactions": "*",
         "fof/sitemap": "*",
         "fof/split": "*",
         "fof/upload": "*",
         "fof/user-bio": "*",
-        "ianm/follow-users": "*"
+        "fof/user-directory": "*",
+        "fof/username-request": "*",
+        "ianm/follow-users": "*",
+        "ianm/gravatar": "*",
+        "ianm/oauth-amazon": "*",
+        "ianm/synopsis": "*",
+        "league/flysystem-aws-s3-v3": "*"
+    },
+    "require-dev": {
+        "symfony/var-dumper": "*"
     },
     "config": {
         "preferred-install": "dist",
         "sort-packages": true
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "prefer-stable": true,
     "repositories": [
         {

@@ -19,12 +19,6 @@ RUN composer install \
   && chmod -R g+w /var/www \
   && chmod 755 /usr/local/bin/startup
 
-ENV MYSQL_DATABASE "flarum"
-ENV MYSQL_USER "flarum"
-ENV MYSQL_PASSWORD "flarum"
-ENV MYSQL_HOST "communitydb"
-ENV MYSQL_PORT "3306"
-
 RUN crontab /etc/cron.d/crontab
 
 CMD ["startup"]

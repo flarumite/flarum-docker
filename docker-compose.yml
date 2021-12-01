@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.9'
 services:
   #######################################
   # PHP Apache Docker container
@@ -9,7 +9,7 @@ services:
       context: .
       dockerfile: Dockerfile.dev
     links:
-      - flarum-db
+      - flarumite-db
     ports:
       # - "127.0.0.1:80:8080"
       # Switch to this line if you want to access Flarum from other devices on your network
@@ -17,26 +17,24 @@ services:
     volumes:
       - .:/var/www:delegated
     privileged: true
-    container_name: flarum-svc
+    container_name: flarumite-svc
     environment:
       MYSQL_USER: flarum
       MYSQL_PASSWORD: flarum
       MYSQL_DATABASE: flarum
-      MYSQL_HOST: flarumdb
+      MYSQL_HOST: flarumitedb
       MYSQL_PORT: 3306
       DB_DRIVER: mysql
       # Update this to match the URL you use to connect to the forum
       # This might be an IP (http://192.168.0.25) or a hostname (http://localhost)
       BASE_URL: "http://localhost"
-      REDIS_HOST: "redis"
-      REDIS_PORT: "6379"
       DEBUG: "true"
       LOCAL: "true"
 
   #######################################
   # MySQL server
   #######################################
-  flarum-db:
+  flarumite-db:
     platform: linux/amd64
     build:
       context: .
@@ -52,7 +50,7 @@ services:
       - database:/var/lib/mysql:delegated
     ports:
       - "3306:3306"
-    container_name: flarumdb
+    container_name: flarumitedb
 
   #######################################
   # PHPMyAdmin
@@ -61,14 +59,50 @@ services:
     platform: linux/amd64
     image: phpmyadmin/phpmyadmin
     environment:
-      PMA_HOSTS: "flarumdb"
-      PMA_VERBOSES: "Flarum Database"
+      PMA_HOSTS: "flarumitedb"
+      PMA_VERBOSES: "Flarumite Database"
     ports:
       - "127.0.0.1:8002:80"
     links:
-      - flarum-db
+      - flarumite-db
     depends_on:
-      - flarum-db
-    container_name: flarumpma
+      - flarumite-db
+    container_name: flarumitepma
+
+  #######################################
+  # Localstack
+  #######################################
+  localstack-s3:
+    image: localstack/localstack:latest
+    container_name: localstack
+    environment:
+     - HOSTNAME=localstack
+     - SERVICES=s3
+     - AWS_ACCESS_KEY_ID=foo
+     - AWS_SECRET_ACCESS_KEY=bar
+     - DEFAULT_REGION=eu-west-2
+     - DATA_DIR=/tmp/localstack/data
+    ports:
+     - "4566:4566"
+    volumes:
+      - flarumite-localstack-data:/tmp/localstack:delegated
+      - './scripts/config/localstack:/docker-entrypoint-initaws.d'
+
+  #######################################
+  # Elastic
+  #######################################
+  elastic:
+    image: elasticsearch:7.14.2
+    container_name: flarumite-elastic
+    environment:
+     - discovery.type=single-node
+     - "ES_JAVA_OPTS=-Xms1024m -Xmx1024m"
+     - ELASTIC_USERNAME=elastic
+     - ELASTIC_PASSWORD=elastic
+    ports:
+     - "9200:9200"
+
 volumes:
   database:
+  flarumite-localstack-data:
+    name: localstack-data

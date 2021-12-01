@@ -13,10 +13,11 @@ if ($mysqlReadHost === false) {
     $mysqlReadHost = $mysqlWriteHost;
 }
 
-return [
+return array(
     'debug'    => $debug,
     'offline'  => false,
-    'database' => [
+    'database' =>
+    array(
         'write' => [
             'host' => $mysqlWriteHost,
         ],
@@ -31,14 +32,20 @@ return [
         'password'       => getenv('MYSQL_PASSWORD'),
         'charset'        => 'utf8mb4',
         'collation'      => 'utf8mb4_unicode_ci',
-        'prefix'         => 'flarum_',
+        'prefix'         => '',
         'strict'         => false,
-        'engine'         => 'InnoDB',
+        'engine'         => null,
         'prefix_indexes' => true,
-    ],
+    ),
     'url'   => getenv('BASE_URL'),
-    'paths' => [
+    'paths' =>
+    array(
         'api'   => 'api',
         'admin' => 'admin',
-    ],
-];
+    ),
+    'headers' =>
+    array(
+        'poweredByHeader' => true,
+        'referrerPolicy' => 'same-origin',
+    ),
+);
