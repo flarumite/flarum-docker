@@ -1,16 +1,19 @@
-version: '3'
+version: '3.8'
 services:
   #######################################
   # PHP Apache Docker container
   #######################################
   apache:
+    platform: linux/amd64
     build:
       context: .
       dockerfile: Dockerfile.dev
     links:
       - flarum-db
     ports:
-      - "127.0.0.1:8001:8080"
+      # - "127.0.0.1:80:8080"
+      # Switch to this line if you want to access Flarum from other devices on your network
+      - "80:8080"
     volumes:
       - .:/var/www:delegated
     privileged: true
@@ -22,7 +25,9 @@ services:
       MYSQL_HOST: flarumdb
       MYSQL_PORT: 3306
       DB_DRIVER: mysql
-      BASE_URL: "http://localhost:8001"
+      # Update this to match the URL you use to connect to the forum
+      # This might be an IP (http://192.168.0.25) or a hostname (http://localhost)
+      BASE_URL: "http://localhost"
       REDIS_HOST: "redis"
       REDIS_PORT: "6379"
       DEBUG: "true"
@@ -32,6 +37,7 @@ services:
   # MySQL server
   #######################################
   flarum-db:
+    platform: linux/amd64
     build:
       context: .
       dockerfile: Dockerfile.db
@@ -52,6 +58,7 @@ services:
   # PHPMyAdmin
   #######################################
   flarum-pma:
+    platform: linux/amd64
     image: phpmyadmin/phpmyadmin
     environment:
       PMA_HOSTS: "flarumdb"
