@@ -13,11 +13,10 @@ if ($mysqlReadHost === false) {
     $mysqlReadHost = $mysqlWriteHost;
 }
 
-return array(
+return [
     'debug'    => $debug,
     'offline'  => false,
-    'database' =>
-    array(
+    'database' => [
         'write' => [
             'host' => $mysqlWriteHost,
         ],
@@ -36,16 +35,14 @@ return array(
         'strict'         => false,
         'engine'         => null,
         'prefix_indexes' => true,
-    ),
+    ],
     'url'   => getenv('BASE_URL'),
-    'paths' =>
-    array(
+    'paths' => [
         'api'   => 'api',
         'admin' => 'admin',
-    ),
-    'headers' =>
-    array(
+    ],
+    'headers' => [
         'poweredByHeader' => true,
-        'referrerPolicy' => 'same-origin',
-    ),
-);
+        'referrerPolicy'  => 'same-origin',
+    ],
+];
