@@ -86,7 +86,7 @@ services:
      - "4566:4566"
     volumes:
       - flarumite-localstack-data:/tmp/localstack:delegated
-      - './scripts/config/localstack:/docker-entrypoint-initaws.d'
+      - './scripts/docker/config/localstack:/docker-entrypoint-initaws.d'
 
   #######################################
   # Elastic
