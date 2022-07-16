@@ -1,4 +1,4 @@
-FROM ianmgg/php80:dev
+FROM ianmgg/php81:dev
 
 COPY ./scripts/docker/config/apache/mpm_prefork.conf /etc/apache2/mods-enabled/mpm_prefork.conf
 COPY ./scripts/docker/config/apache/status.conf /etc/apache2/mods-enabled/status.conf
@@ -6,6 +6,7 @@ COPY ./scripts/docker/config/php/startup-apache-dev.sh /usr/local/bin/startup
 COPY ./scripts/docker/config/apache/000-default.conf /etc/apache2/sites-available/000-default.conf
 COPY ./scripts/docker/config/php/docker-php-ext-xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 COPY ./scripts/docker/config/php/sessions.ini /usr/local/etc/php/conf.d/sessions.ini
+COPY ./scripts/docker/config/php/hide-deprecation.ini /usr/local/etc/php/conf.d/hide-deprecation.ini
 COPY ./scripts/docker/config/cronjobs/crontab /etc/cron.d/crontab
 
 RUN chmod 0644 /etc/cron.d/crontab
