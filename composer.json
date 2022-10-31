@@ -24,7 +24,7 @@
     "docs": "https://flarum.org/docs/"
   },
   "require": {
-    "php": "^8.0",
+    "php": "^8.1",
     "blomstra/cache-assets": "*",
     "blomstra/database-queue": "*",
     "blomstra/exomath": "@dev",
