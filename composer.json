@@ -27,10 +27,7 @@
     "php": "^8.1",
     "blomstra/cache-assets": "*",
     "blomstra/database-queue": "*",
-    "blomstra/exomath": "@dev",
     "blomstra/flarum-redis": "*",
-    "blomstra/fontawesome": "@dev",
-    "blomstra/list-your-project": "dev-master",
     "blomstra/search": "*",
     "blomstra/test-notification-dispatcher": "*",
     "davwheat/custom-sidenav-links": "*",
@@ -79,7 +76,7 @@
     "ianm/oauth-amazon": "*",
     "ianm/synopsis": "*",
     "league/flysystem-aws-s3-v3": "*",
-    "migratetoflarum/fake-data": "^1.3"
+    "migratetoflarum/fake-data": "*"
   },
   "require-dev": {
     "symfony/var-dumper": "*"
