@@ -21,15 +21,14 @@ RUN useradd -G www-data,root -u $uid -d /home/$user $user
 RUN mkdir -p /home/$user/.composer && \
     chown -R $user:$user /home/$user
 
+RUN rm -rf /var/www/html
+
 WORKDIR /var/www
 
-RUN rm -rf /var/www/html
-COPY . /var/www/
-RUN composer install \
-  && chown -R www-data:www-data /var/www \
-  && chmod -R g+w /var/www \
-  && chmod 755 /usr/local/bin/startup
+RUN chmod 755 /usr/local/bin/startup
 
 RUN crontab /etc/cron.d/crontab
+
+USER $user
 
 CMD ["startup"]
