@@ -163,6 +163,21 @@ ports:
 
 ## Usage
 
+Get your Linux username with `whoami`, and your UID with `id -u $(whoami)`.
+
+Edit `docker-compose.yml` to enter your username and UID under the `args` section.
+
+```yml
+apache:
+  platform: linux/amd64
+  build:
+    context: .
+    dockerfile: Dockerfile.dev
+    args:
+      user: <username>
+      uid: <uid>
+```
+
 From the root of the repository, run:
 
 ```properties

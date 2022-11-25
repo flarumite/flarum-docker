@@ -1,5 +1,8 @@
 FROM ianmgg/php81:dev
 
+ARG user
+ARG uid
+
 COPY ./scripts/docker/config/apache/mpm_prefork.conf /etc/apache2/mods-enabled/mpm_prefork.conf
 COPY ./scripts/docker/config/apache/status.conf /etc/apache2/mods-enabled/status.conf
 COPY ./scripts/docker/config/php/startup-apache-dev.sh /usr/local/bin/startup
@@ -13,6 +16,10 @@ COPY ./scripts/docker/config/cronjobs/crontab /etc/cron.d/crontab
 # COPY ./scripts/docker/config/php/hide-deprecation.ini /usr/local/etc/php/conf.d/hide-deprecation.ini
 
 RUN chmod 0644 /etc/cron.d/crontab
+
+RUN useradd -G www-data,root -u $uid -d /home/$user $user
+RUN mkdir -p /home/$user/.composer && \
+    chown -R $user:$user /home/$user
 
 WORKDIR /var/www
 
