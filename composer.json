@@ -1,93 +1,100 @@
 {
-    "name": "flarumite/flarum-docker",
-    "description": "Simple Docker image to aid Flarum extension development.",
-    "type": "metapackage",
-    "keywords": [
-        "flarum",
-        "docker"
-    ],
-    "homepage": "https://github.com/flarumite/flarum-docker",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Ian Morland",
-            "email": "ian@blomstra.net"
-        },
-        {
-            "name": "David Wheatley",
-            "email": "hi@davwheat.dev"
-        }
-    ],
-    "support": {
-        "issues": "https://github.com/flarumite/flarum-docker/issues",
-        "source": "https://github.com/flarumite/flarum-docker",
-        "docs": "https://flarum.org/docs/"
+  "name": "flarumite/flarum-docker",
+  "description": "Simple Docker image to aid Flarum extension development.",
+  "type": "metapackage",
+  "keywords": [
+    "flarum",
+    "docker"
+  ],
+  "homepage": "https://github.com/flarumite/flarum-docker",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Ian Morland",
+      "email": "ian@blomstra.net"
     },
-    "require": {
-        "php": "^8.0",
-        "blomstra/cache-assets": "*",
-        "blomstra/database-queue": "*",
-        "blomstra/flarum-redis": "*",
-        "blomstra/search": "*",
-        "davwheat/custom-sidenav-links": "*",
-        "flarum/approval": "*",
-        "flarum/bbcode": "*",
-        "flarum/core": "^1.1",
-        "flarum/emoji": "*",
-        "flarum/flags": "*",
-        "flarum/lang-english": "*",
-        "flarum/likes": "*",
-        "flarum/lock": "*",
-        "flarum/markdown": "*",
-        "flarum/mentions": "*",
-        "flarum/nicknames": "*",
-        "flarum/statistics": "*",
-        "flarum/sticky": "*",
-        "flarum/subscriptions": "*",
-        "flarum/suspend": "*",
-        "flarum/tags": "*",
-        "fof/best-answer": "*",
-        "fof/byobu": "*",
-        "fof/default-user-preferences": "*",
-        "fof/follow-tags": "*",
-        "fof/formatting": "*",
-        "fof/gamification": "*",
-        "fof/geoip": "*",
-        "fof/ignore-users": "*",
-        "fof/impersonate": "*",
-        "fof/linguist": "*",
-        "fof/links": "*",
-        "fof/moderator-notes": "*",
-        "fof/nightmode": "*",
-        "fof/oauth": "*",
-        "fof/pages": "*",
-        "fof/profile-image-crop": "*",
-        "fof/reactions": "*",
-        "fof/sitemap": "*",
-        "fof/split": "*",
-        "fof/upload": "*",
-        "fof/user-bio": "*",
-        "fof/user-directory": "*",
-        "fof/username-request": "*",
-        "ianm/follow-users": "*",
-        "ianm/gravatar": "*",
-        "ianm/oauth-amazon": "*",
-        "ianm/synopsis": "*",
-        "league/flysystem-aws-s3-v3": "*"
+    {
+      "name": "David Wheatley",
+      "email": "hi@davwheat.dev"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/flarumite/flarum-docker/issues",
+    "source": "https://github.com/flarumite/flarum-docker",
+    "docs": "https://flarum.org/docs/"
+  },
+  "require": {
+    "php": "^8.1",
+    "blomstra/cache-assets": "*",
+    "blomstra/database-queue": "*",
+    "blomstra/flarum-redis": "*",
+    "blomstra/search": "*",
+    "blomstra/test-notification-dispatcher": "*",
+    "davwheat/custom-sidenav-links": "*",
+    "flarum/approval": "*",
+    "flarum/bbcode": "*",
+    "flarum/core": "^1.1",
+    "flarum/emoji": "*",
+    "flarum/flags": "*",
+    "flarum/lang-english": "*",
+    "flarum/likes": "*",
+    "flarum/lock": "*",
+    "flarum/markdown": "*",
+    "flarum/mentions": "*",
+    "flarum/nicknames": "*",
+    "flarum/statistics": "*",
+    "flarum/sticky": "*",
+    "flarum/subscriptions": "*",
+    "flarum/suspend": "*",
+    "flarum/tags": "*",
+    "fof/best-answer": "*",
+    "fof/byobu": "*",
+    "fof/clockwork": "^1.0",
+    "fof/default-user-preferences": "*",
+    "fof/follow-tags": "*",
+    "fof/formatting": "*",
+    "fof/gamification": "*",
+    "fof/geoip": "*",
+    "fof/ignore-users": "*",
+    "fof/impersonate": "*",
+    "fof/linguist": "*",
+    "fof/links": "*",
+    "fof/moderator-notes": "*",
+    "fof/nightmode": "*",
+    "fof/oauth": "*",
+    "fof/pages": "*",
+    "fof/profile-image-crop": "*",
+    "fof/reactions": "*",
+    "fof/sitemap": "*",
+    "fof/split": "*",
+    "fof/upload": "*",
+    "fof/user-bio": "*",
+    "fof/user-directory": "*",
+    "fof/username-request": "*",
+    "ianm/follow-users": "*",
+    "ianm/gravatar": "*",
+    "ianm/oauth-amazon": "*",
+    "ianm/synopsis": "*",
+    "league/flysystem-aws-s3-v3": "*",
+    "migratetoflarum/fake-data": "*"
+  },
+  "require-dev": {
+    "symfony/var-dumper": "*"
+  },
+  "config": {
+    "preferred-install": "dist",
+    "sort-packages": true
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "repositories": [
+    {
+      "type": "path",
+      "url": "workbench/*"
     },
-    "require-dev": {
-        "symfony/var-dumper": "*"
-    },
-    "config": {
-        "preferred-install": "dist",
-        "sort-packages": true
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
-    "repositories": [
-        {
-            "type": "path",
-            "url": "workbench/*"
-        }
-    ]
+    {
+      "type": "path",
+      "url": "framework/*/*"
+    }
+  ]
 }

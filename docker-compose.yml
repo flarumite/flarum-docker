@@ -1,4 +1,4 @@
-version: '3.9'
+version: "3.9"
 services:
   #######################################
   # PHP Apache Docker container
@@ -8,6 +8,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
+      args:
+        user: david
+        uid: 1000
     links:
       - flarumite-db
     ports:
@@ -15,8 +18,8 @@ services:
       # Switch to this line if you want to access Flarum from other devices on your network
       - "80:8080"
     volumes:
-      - .:/var/www:delegated
-    privileged: true
+      - .:/var/www
+    # privileged: true
     container_name: flarumite-svc
     environment:
       MYSQL_USER: flarum
@@ -27,7 +30,7 @@ services:
       DB_DRIVER: mysql
       # Update this to match the URL you use to connect to the forum
       # This might be an IP (http://192.168.0.25) or a hostname (http://localhost)
-      BASE_URL: "http://localhost"
+      BASE_URL: "http://local.davw.network"
       DEBUG: "true"
       LOCAL: "true"
 
@@ -73,20 +76,20 @@ services:
   # Localstack
   #######################################
   localstack-s3:
-    image: localstack/localstack:latest
+    image: localstack/localstack:1.4
     container_name: localstack
     environment:
-     - HOSTNAME=localstack
-     - SERVICES=s3
-     - AWS_ACCESS_KEY_ID=foo
-     - AWS_SECRET_ACCESS_KEY=bar
-     - DEFAULT_REGION=eu-west-2
-     - DATA_DIR=/tmp/localstack/data
+      - HOSTNAME=localstack
+      - SERVICES=s3
+      - AWS_ACCESS_KEY_ID=foo
+      - AWS_SECRET_ACCESS_KEY=bar
+      - DEFAULT_REGION=eu-west-2
+      - DATA_DIR=/tmp/localstack/data
     ports:
-     - "4566:4566"
+      - "4566:4566"
     volumes:
       - flarumite-localstack-data:/tmp/localstack:delegated
-      - './scripts/docker/config/localstack:/docker-entrypoint-initaws.d'
+      - "./scripts/docker/config/localstack:/docker-entrypoint-initaws.d"
 
   #######################################
   # Elastic
@@ -95,12 +98,12 @@ services:
     image: elasticsearch:7.14.2
     container_name: flarumite-elastic
     environment:
-     - discovery.type=single-node
-     - "ES_JAVA_OPTS=-Xms1024m -Xmx1024m"
-     - ELASTIC_USERNAME=elastic
-     - ELASTIC_PASSWORD=elastic
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms1024m -Xmx1024m"
+      - ELASTIC_USERNAME=elastic
+      - ELASTIC_PASSWORD=elastic
     ports:
-     - "9200:9200"
+      - "9200:9200"
 
 volumes:
   database:

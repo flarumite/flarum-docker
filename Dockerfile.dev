@@ -1,4 +1,7 @@
-FROM ianmgg/php80:dev
+FROM ianmgg/php81:dev
+
+ARG user
+ARG uid
 
 COPY ./scripts/docker/config/apache/mpm_prefork.conf /etc/apache2/mods-enabled/mpm_prefork.conf
 COPY ./scripts/docker/config/apache/status.conf /etc/apache2/mods-enabled/status.conf
@@ -8,17 +11,24 @@ COPY ./scripts/docker/config/php/docker-php-ext-xdebug.ini /usr/local/etc/php/co
 COPY ./scripts/docker/config/php/sessions.ini /usr/local/etc/php/conf.d/sessions.ini
 COPY ./scripts/docker/config/cronjobs/crontab /etc/cron.d/crontab
 
+# Hide deprecation and warning messages which prevent Flarum loading.
+# This shouldn't be needed in most cases, but is available just in case.
+# COPY ./scripts/docker/config/php/hide-deprecation.ini /usr/local/etc/php/conf.d/hide-deprecation.ini
+
 RUN chmod 0644 /etc/cron.d/crontab
+
+RUN useradd -G www-data,root -u $uid -d /home/$user $user
+RUN mkdir -p /home/$user/.composer && \
+    chown -R $user:$user /home/$user
+
+RUN rm -rf /var/www/html
 
 WORKDIR /var/www
 
-RUN rm -rf /var/www/html
-COPY . /var/www/
-RUN composer install \
-  && chown -R www-data:www-data /var/www \
-  && chmod -R g+w /var/www \
-  && chmod 755 /usr/local/bin/startup
+RUN chmod 755 /usr/local/bin/startup
 
 RUN crontab /etc/cron.d/crontab
+
+USER $user
 
 CMD ["startup"]
