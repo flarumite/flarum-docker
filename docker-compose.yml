@@ -30,7 +30,7 @@ services:
       DB_DRIVER: mysql
       # Update this to match the URL you use to connect to the forum
       # This might be an IP (http://192.168.0.25) or a hostname (http://localhost)
-      BASE_URL: "http://localhost"
+      BASE_URL: "http://local.davw.network"
       DEBUG: "true"
       LOCAL: "true"
 
@@ -76,7 +76,7 @@ services:
   # Localstack
   #######################################
   localstack-s3:
-    image: localstack/localstack:latest
+    image: localstack/localstack:1.4
     container_name: localstack
     environment:
       - HOSTNAME=localstack
